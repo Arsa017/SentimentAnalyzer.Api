@@ -1,7 +1,16 @@
 using Microsoft.EntityFrameworkCore;
 using SentimentAnalyzer.Api.DbContexts;
+using Serilog;
+
+Log.Logger = new LoggerConfiguration()
+    .MinimumLevel.Debug()
+    .WriteTo.Console()
+    .WriteTo.File("logs/sentimentAnalyzer.txt", rollingInterval: RollingInterval.Day)
+    .CreateLogger();
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Host.UseSerilog();
 
 // Add services to the container.
 
