@@ -1,6 +1,9 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using SentimentAnalyzer.Api.Entities;
 using SentimentAnalyzer.Api.Models;
+using SentimentAnalyzer.Api.Services;
 
 namespace SentimentAnalyzer.Api.Controllers
 {
@@ -8,18 +11,82 @@ namespace SentimentAnalyzer.Api.Controllers
     [ApiController]
     public class LexiconController : ControllerBase
     {
-        [HttpGet]
-        public ActionResult<IEnumerable<LexiconResponse>> GetLexicon()
-        {
-            var result =
-                    new List<LexiconResponse>
-                    {
-                        new LexiconResponse { Id = 1, Word = "Kafa", SentimentScore = 0.5 },
-                        new LexiconResponse { Id = 2, Word = "Kisa", SentimentScore = -0.2 },
-                    };
-               
+        private readonly ILexiconService _lexiconService;
+        private readonly IMapper _mapper;
+        private readonly ILogger<LexiconController> _logger;
 
-            return Ok(result);
+        public LexiconController(
+            ILexiconService lexiconService,
+            IMapper mapper,
+            ILogger<LexiconController> logger)
+        {
+            _lexiconService = lexiconService;
+            _mapper = mapper;
+            _logger = logger;
         }
+
+        [HttpGet]
+        public async Task<ActionResult<List<LexiconResponse>>> GetLexiconWords()
+        {
+
+            var lexiconResp = new List<LexiconResponse>();
+
+            try
+            {
+                var resp = await _lexiconService.GetLexiconWordsAsync().ConfigureAwait(false);
+                lexiconResp = _mapper.Map<List<LexiconResponse>>(resp.ToList());
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Error occured: LexiconController: GetLexiconWords(); message: {ex.Message}");
+            }
+            
+            return Ok(lexiconResp);
+        }
+
+        [HttpGet("{word}")]
+        public async Task<ActionResult<LexiconResponse>> GetLexiconWord(string word)
+        {
+            var lexiconResponse = new LexiconResponse();
+
+            try
+            {
+                var resp = await _lexiconService.GetLexiconWordAsync(word).ConfigureAwait(false);
+
+                if (resp == null)
+                {
+                    return NotFound();
+                }
+
+                lexiconResponse = _mapper.Map<LexiconResponse>(resp);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Error occured: LexiconController: GetLexiconWord(); message: {ex.Message}");
+            }
+
+            return Ok(lexiconResponse);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> AddWordToLexicon(LexiconRequest lexiconRequest)
+        {
+            try
+            {
+                var lexiconEntity = _mapper.Map<Lexicon>(lexiconRequest);
+                
+                await _lexiconService.AddWordToLexiconAsync(lexiconEntity).ConfigureAwait(false);
+
+                await _lexiconService.SaveChangesAsync().ConfigureAwait(false);
+
+            } 
+            catch (Exception ex)
+            {
+                _logger.LogError($"Error occured: LexiconController: AddWordToLexicon(); message: {ex.Message}");
+            }
+
+            return NoContent();
+        }
+        
     }
 }

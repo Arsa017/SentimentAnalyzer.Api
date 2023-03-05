@@ -1,16 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace SentimentAnalyzer.Api.Entities
+namespace SentimentAnalyzer.Api.Models
 {
-    public class Lexicon
+    public class LexiconRequest
     {
-        [Key]
         public int Id { get; set; }
-
         [Required]
-        [MaxLength(20)]
         public string? Word { get; set; }
-
         [Required]
         public string? SentimentScore { get; set; }
     }

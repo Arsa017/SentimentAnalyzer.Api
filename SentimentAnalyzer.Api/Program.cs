@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using SentimentAnalyzer.Api.DbContexts;
+using SentimentAnalyzer.Api.Services;
 using Serilog;
 
 Log.Logger = new LoggerConfiguration()
@@ -18,6 +19,10 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddScoped<ILexiconService, LexiconService>();
+
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 builder.Services.AddDbContext<LexiconContext>(
     dbContextOptions => dbContextOptions.UseSqlServer(

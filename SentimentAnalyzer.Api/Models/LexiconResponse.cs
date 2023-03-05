@@ -4,6 +4,6 @@
     {
         public int Id { get; set; }
         public string? Word { get; set; }
-        public double SentimentScore { get; set; }
+        public string? SentimentScore { get; set; }
     }
 }
