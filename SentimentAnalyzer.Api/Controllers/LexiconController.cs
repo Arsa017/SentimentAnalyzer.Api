@@ -83,6 +83,7 @@ namespace SentimentAnalyzer.Api.Controllers
             catch (Exception ex)
             {
                 _logger.LogError($"Error occured: LexiconController: AddWordToLexicon(); message: {ex.Message}");
+                return BadRequest();
             }
 
             return NoContent();
