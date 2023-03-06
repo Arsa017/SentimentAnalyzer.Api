@@ -17,7 +17,7 @@ namespace SentimentAnalyzer.Api.Services
             _logger = logger;
         }
 
-        public async Task<IEnumerable<Lexicon>> GetLexiconWordsAsync()
+        public async Task<List<Lexicon>> GetLexiconWordsAsync()
         {
             var resp = new List<Lexicon>();
 
@@ -33,7 +33,7 @@ namespace SentimentAnalyzer.Api.Services
             return resp;
         }
 
-        public async Task<Lexicon?> GetLexiconWordAsync(string word)
+        public async Task<Lexicon?> GetLexiconWordAsync(string? word)
         {
 
             var resp = new Lexicon();
@@ -44,7 +44,7 @@ namespace SentimentAnalyzer.Api.Services
             } 
             catch (Exception ex)
             {
-                _logger.LogError($"Error occured: LexiconService: GetLexiconWordAsync(); message: {ex.Message}");
+                _logger.LogError($"Error occured: LexiconService: GetLexiconWordAsync(); request: {word} message: {ex.Message}");
             }
 
             return resp;
@@ -63,7 +63,7 @@ namespace SentimentAnalyzer.Api.Services
             } 
             catch(Exception ex)
             {
-                _logger.LogError($"Error occured: LexiconService: AddWordToLexiconAsync(); message: {ex.Message}");
+                _logger.LogError($"Error occured: LexiconService: AddWordToLexiconAsync(); request: {lexiconWordToAdd} message: {ex.Message}");
             }
         }
 

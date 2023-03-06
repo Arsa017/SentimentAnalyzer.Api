@@ -62,7 +62,7 @@ namespace SentimentAnalyzer.Api.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Error occured: LexiconController: GetLexiconWord(); message: {ex.Message}");
+                _logger.LogError($"Error occured: LexiconController: GetLexiconWord(); request: {word} message: {ex.Message}");
             }
 
             return Ok(lexiconResponse);
@@ -82,7 +82,7 @@ namespace SentimentAnalyzer.Api.Controllers
             } 
             catch (Exception ex)
             {
-                _logger.LogError($"Error occured: LexiconController: AddWordToLexicon(); message: {ex.Message}");
+                _logger.LogError($"Error occured: LexiconController: AddWordToLexicon(); request: {lexiconRequest} message: {ex.Message}");
                 return BadRequest();
             }
 

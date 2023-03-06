@@ -4,7 +4,7 @@ namespace SentimentAnalyzer.Api.Services
 {
     public interface ILexiconService
     {
-        public Task<IEnumerable<Lexicon>> GetLexiconWordsAsync();
+        public Task<List<Lexicon>> GetLexiconWordsAsync();
 
         public Task<Lexicon?> GetLexiconWordAsync(string word);
 
