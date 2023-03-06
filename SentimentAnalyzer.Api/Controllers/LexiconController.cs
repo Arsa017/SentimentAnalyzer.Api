@@ -34,6 +34,12 @@ namespace SentimentAnalyzer.Api.Controllers
             try
             {
                 var resp = await _lexiconService.GetLexiconWordsAsync().ConfigureAwait(false);
+
+                if(!resp.Any())
+                {
+                    return NoContent();
+                }
+
                 lexiconResp = _mapper.Map<List<LexiconResponse>>(resp.ToList());
             }
             catch (Exception ex)
@@ -98,6 +104,7 @@ namespace SentimentAnalyzer.Api.Controllers
 
                 if (lexiconEntity is null)
                 {
+                    _logger.LogError($"LexiconRequest object doesn't exists! request: {lexiconRequest}");
                     return NotFound();
                 }
 
@@ -108,6 +115,31 @@ namespace SentimentAnalyzer.Api.Controllers
             catch (Exception ex)
             {
                 _logger.LogError($"Error occured: LexiconController: UpdateWordInLexicon(lexiconRequest); request: {lexiconRequest} message: {ex.Message}");
+            }
+
+            return NoContent();
+        }
+
+        [HttpDelete("delete/word/{wordName}")]
+        public async Task<ActionResult> DeleteWordFromLexicon(string wordName)
+        {
+            try
+            {
+                var lexiconEntity = await _lexiconService.GetLexiconWordAsync(wordName).ConfigureAwait(false);
+
+                if (lexiconEntity is null)
+                {
+                    _logger.LogError($"LexiconRequest object doesn't exists! request: {wordName}");
+                    return NotFound();
+                }
+
+                _lexiconService.DeleteWordFromLexicon(lexiconEntity);
+
+                await _lexiconService.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Error occured: LexiconController: DeleteWordFromLexicon(wordName); request: {wordName} message: {ex.Message}");
             }
 
             return NoContent();

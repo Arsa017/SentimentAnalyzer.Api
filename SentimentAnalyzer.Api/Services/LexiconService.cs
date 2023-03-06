@@ -83,9 +83,23 @@ namespace SentimentAnalyzer.Api.Services
             }
         }
 
+        public void DeleteWordFromLexicon(Lexicon lexiconWordToRemove)
+        {
+            try
+            {
+                _lexiconContext.Lexicon.Remove(lexiconWordToRemove);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Error occured: LexiconService: DeleteWordFromLexicon(wordToRemove); request: {lexiconWordToRemove} message: {ex.Message}");
+            }
+        }
+
         public async Task<bool> SaveChangesAsync()
         {
             return (await _lexiconContext.SaveChangesAsync() >= 0);
         }
+
+
     }
 }

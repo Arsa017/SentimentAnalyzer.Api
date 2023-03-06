@@ -12,8 +12,9 @@ namespace SentimentAnalyzer.Api.Services
 
         public Task AddWordToLexiconAsync(Lexicon lexiconWordToAdd);
 
+        public void DeleteWordFromLexicon(Lexicon lexiconWordToRemove);
+
         public Task<bool> SaveChangesAsync();
 
-        
     }
 }
