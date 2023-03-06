@@ -44,7 +44,23 @@ namespace SentimentAnalyzer.Api.Services
             } 
             catch (Exception ex)
             {
-                _logger.LogError($"Error occured: LexiconService: GetLexiconWordAsync(); request: {word} message: {ex.Message}");
+                _logger.LogError($"Error occured: LexiconService: GetLexiconWordAsync(word); request: {word} message: {ex.Message}");
+            }
+
+            return resp;
+        }
+
+        public async Task<Lexicon?> GetLexiconWordByIdAsync(int? id)
+        {
+            var resp = new Lexicon();
+
+            try
+            {
+                resp = await _lexiconContext.Lexicon.Where(l => l.Id == id).FirstOrDefaultAsync();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Error occured: LexiconService: GetLexiconWordByIdAsync(id); request: {id} message: {ex.Message}");
             }
 
             return resp;

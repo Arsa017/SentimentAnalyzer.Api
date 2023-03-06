@@ -82,8 +82,32 @@ namespace SentimentAnalyzer.Api.Controllers
             } 
             catch (Exception ex)
             {
-                _logger.LogError($"Error occured: LexiconController: AddWordToLexicon(); request: {lexiconRequest} message: {ex.Message}");
+                _logger.LogError($"Error occured: LexiconController: AddWordToLexicon(lexiconRequest); request: {lexiconRequest} message: {ex.Message}");
                 return BadRequest();
+            }
+
+            return NoContent();
+        }
+
+        [HttpPut("update/word")]
+        public async Task<ActionResult> UpdateWordInLexicon(LexiconRequest lexiconRequest)
+        {
+            try
+            {
+                var lexiconEntity = await _lexiconService.GetLexiconWordByIdAsync(lexiconRequest.Id).ConfigureAwait(false);
+
+                if (lexiconEntity is null)
+                {
+                    return NotFound();
+                }
+
+                _mapper.Map(lexiconRequest, lexiconEntity);
+
+                await _lexiconService.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Error occured: LexiconController: UpdateWordInLexicon(lexiconRequest); request: {lexiconRequest} message: {ex.Message}");
             }
 
             return NoContent();
