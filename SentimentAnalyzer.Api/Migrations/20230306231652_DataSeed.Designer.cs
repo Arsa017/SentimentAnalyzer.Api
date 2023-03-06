@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SentimentAnalyzer.Api.DbContexts;
 
@@ -10,9 +11,11 @@ using SentimentAnalyzer.Api.DbContexts;
 namespace SentimentAnalyzer.Api.Migrations
 {
     [DbContext(typeof(LexiconContext))]
-    partial class LexiconContextModelSnapshot : ModelSnapshot
+    [Migration("20230306231652_DataSeed")]
+    partial class DataSeed
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
