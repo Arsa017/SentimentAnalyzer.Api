@@ -96,29 +96,34 @@ namespace SentimentAnalyzer.Api.Controllers
         }
 
         [HttpPut("update/word")]
-        public async Task<ActionResult> UpdateWordInLexicon(LexiconRequest lexiconRequest)
+        public async Task<ActionResult> UpdateWordInLexicon(LexiconUpdateRequest lexiconUpdateRequest)
         {
             try
             {
-                var lexiconEntity = await _lexiconService.GetLexiconWordByIdAsync(lexiconRequest.Id).ConfigureAwait(false);
+                var oldWord = lexiconUpdateRequest.OldWord;
+
+                var lexiconEntity = await _lexiconService.GetLexiconWordAsync(oldWord).ConfigureAwait(false);
 
                 if (lexiconEntity is null)
                 {
-                    _logger.LogError($"LexiconRequest object doesn't exists! request: {lexiconRequest}");
+                    _logger.LogDebug($"LexiconRequest object not found! request: {lexiconUpdateRequest}");
                     return NotFound();
                 }
 
-                _mapper.Map(lexiconRequest, lexiconEntity);
+                lexiconEntity.Word = lexiconUpdateRequest.NewWord;
+                lexiconEntity.SentimentScore = lexiconUpdateRequest.NewSentimentScore;
 
                 await _lexiconService.SaveChangesAsync();
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Error occured: LexiconController: UpdateWordInLexicon(lexiconRequest); request: {lexiconRequest} message: {ex.Message}");
+                _logger.LogError($"Error occured: LexiconController: UpdateWordInLexicon(lexiconUpdateRequest); request: {lexiconUpdateRequest} message: {ex.Message}");
+                return BadRequest();
             }
 
             return NoContent();
         }
+
 
         [HttpDelete("delete/word/{wordName}")]
         public async Task<ActionResult> DeleteWordFromLexicon(string wordName)
