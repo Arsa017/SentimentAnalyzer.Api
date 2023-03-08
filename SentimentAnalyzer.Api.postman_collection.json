@@ -1,0 +1,135 @@
+{
+	"info": {
+		"_postman_id": "6adaf71d-f835-45ab-86c3-05f3d07e0613",
+		"name": "SentimentAnalyzer.Api",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "25163470"
+	},
+	"item": [
+		{
+			"name": "GET Lexicon",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:7104/api/lecixon",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7104",
+					"path": [
+						"api",
+						"lecixon"
+					]
+				},
+				"description": "Get Lexicon"
+			},
+			"response": []
+		},
+		{
+			"name": "GET Word",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:{{portNumber}}/api/lecixon/tegla",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "{{portNumber}}",
+					"path": [
+						"api",
+						"lecixon",
+						"tegla"
+					]
+				},
+				"description": "GET Word"
+			},
+			"response": []
+		},
+		{
+			"name": "POST Word",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"Word\": \"Zima\",\r\n    \"SentimentScore\": \"0.4\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:{{portNumber}}/api/lecixon",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "{{portNumber}}",
+					"path": [
+						"api",
+						"lecixon"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PUT Word",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \r\n}",
+					"options": {
+						"raw": {
+							"language": "html"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:{{portNumber}}/api/lecixon/update/word",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "{{portNumber}}",
+					"path": [
+						"api",
+						"lecixon",
+						"update",
+						"word"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE Word",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:{{portNumber}}/api/lecixon/delete/word",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "{{portNumber}}",
+					"path": [
+						"api",
+						"lecixon",
+						"delete",
+						"word"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
