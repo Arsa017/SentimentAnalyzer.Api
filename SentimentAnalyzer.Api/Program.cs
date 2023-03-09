@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using SentimentAnalyzer.Api.DbContexts;
 using SentimentAnalyzer.Api.Services;
 using Serilog;
+using System.Text.Json;
 
 Log.Logger = new LoggerConfiguration()
     .MinimumLevel.Debug()
@@ -15,7 +16,22 @@ builder.Host.UseSerilog();
 
 // Add services to the container.
 
-builder.Services.AddControllers();
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAngularDev",
+        builder => builder
+            .WithOrigins("http://localhost:4200")
+            .AllowAnyHeader()
+            .AllowAnyMethod());
+});
+
+
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
+    });
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -42,6 +58,8 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseRouting();
+
+app.UseCors("AllowAngularDev");
 
 app.UseAuthorization();
 

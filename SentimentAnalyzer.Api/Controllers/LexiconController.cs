@@ -7,7 +7,7 @@ using SentimentAnalyzer.Api.Services;
 
 namespace SentimentAnalyzer.Api.Controllers
 {
-    [Route("api/lecixon")]
+    [Route("api/lexicon")]
     [ApiController]
     public class LexiconController : ControllerBase
     {
